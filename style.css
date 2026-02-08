@@ -724,7 +724,8 @@ color:rgb(85, 82, 82); ;
     margin: 40px auto;
     padding: 0 20px;
  }
- .p4{
+ .civic a{
+     margin: 0 auto 0 22px;
     color: var(--primary-blue);
  }
  .civic h2{
