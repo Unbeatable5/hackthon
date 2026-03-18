@@ -1,27 +1,96 @@
-const data = [];
-for (let i = 1; i <= 20; i++) {
-  data.push({
-    id: 568423500 + i,
-    desc: ["Water problem","Road problem","Electric problem"][i%3],
-    status: ["Pending","Solved","Delayed"][i%3],
-    area: ["Central ward","East ward","West ward"][i%3],
-    date: "2 Dec 2025",
-    priority: ["Low","Medium","High"][i%3]
-  });
+function searchTable(){
+
+let input = document.getElementById("searchInput").value.toLowerCase();
+let rows = document.querySelectorAll("#complaintTable tbody tr");
+
+rows.forEach(row=>{
+
+let text = row.innerText.toLowerCase();
+
+row.style.display = text.includes(input) ? "" : "none";
+
+});
+
 }
 
-const tbody = document.getElementById("complaintTable");
 
-data.forEach((d, i) => {
-  tbody.innerHTML += `
-    <tr>
-      <td><input type="checkbox"></td>
-      <td>${i + 1}</td>
-      <td>${d.id}</td>
-      <td>${d.desc}</td>
-      <td><span class="status ${d.status.toLowerCase()}">${d.status}</span></td>
-      <td>${d.area}</td>
-      <td>${d.date}</td>
-      <td>${d.priority}</td>
-    </tr>`;
+function viewComplaint(){
+
+window.location.href="track.html";
+
+}
+
+
+function deleteSelected(){
+
+let boxes=document.querySelectorAll("tbody input[type='checkbox']:checked");
+
+boxes.forEach(box=>{
+
+box.closest("tr").remove();
+
 });
+
+}
+
+
+function filterStatus(type){
+
+let rows=document.querySelectorAll("#complaintTable tbody tr");
+
+rows.forEach(row=>{
+
+let status=row.querySelector(".status").innerText.toLowerCase();
+
+if(type==="all"){
+row.style.display="";
+}
+else if(status===type){
+row.style.display="";
+}
+else{
+row.style.display="none";
+}
+
+});
+
+}
+
+
+function filterPriority(type){
+
+let rows=document.querySelectorAll("#complaintTable tbody tr");
+
+rows.forEach(row=>{
+
+let priority=row.children[7].innerText.toLowerCase();
+
+if(priority===type){
+row.style.display="";
+}
+else{
+row.style.display="none";
+}
+
+});
+
+}
+
+
+let page=1;
+
+function nextPage(){
+
+page++;
+document.getElementById("pageInfo").innerText=page+" / 2";
+
+}
+
+function prevPage(){
+
+if(page>1){
+page--;
+document.getElementById("pageInfo").innerText=page+" / 2";
+}
+
+}

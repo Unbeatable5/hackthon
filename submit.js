@@ -1,47 +1,48 @@
-const continueBtn = document.getElementById("continueBtn");
-const aiThinking = document.getElementById("aiThinking");
-const aiText = document.getElementById("aiText");
-const aiResults = document.getElementById("aiResults");
+function startAI(){
 
-function runAIProcess() {
-    aiThinking.classList.remove("hidden");
-    aiResults.classList.add("hidden");
-    continueBtn.disabled = true;
+let desc=document.getElementById("desc").value;
 
-    // Step 1
-    aiText.textContent = "CivicSense AI Checking the Text..";
-
-    setTimeout(() => {
-        // Step 2
-        aiText.textContent = "CivicSense AI Assigning Category..";
-
-        setTimeout(() => {
-            // Step 3
-            aiText.textContent = "CivicSense AI Giving Priority..";
-
-            setTimeout(() => {
-                aiThinking.classList.add("hidden");
-                aiResults.classList.remove("hidden");
-
-                document.getElementById("category").value = "Water";
-                document.getElementById("priority").value = "Medium";
-
-                // 🔁 Change button to Retry
-                continueBtn.textContent = "Retry with AI";
-                continueBtn.disabled = false;
-
-            }, 2000);
-        }, 2000);
-    }, 2000);
+if(desc==""){
+alert("Please describe your issue");
+return;
 }
 
-continueBtn.addEventListener("click", function () {
-    const description = document.getElementById("description").value.trim();
 
-    if (!description) {
-        alert("Please enter a complaint description first.");
-        return;
-    }
+/* blur form */
 
-    runAIProcess();
-});
+document.getElementById("formCard").classList.add("blur");
+
+
+/* show loader */
+
+document.getElementById("loaderScreen").style.display="flex";
+
+
+/* simulate AI processing */
+
+setTimeout(function(){
+
+document.getElementById("loaderScreen").style.display="none";
+
+document.getElementById("formCard").classList.remove("blur");
+
+document.getElementById("aiSection").style.display="block";
+
+},3000);
+
+}
+function submitComplaint(){
+
+let popup = document.getElementById("successPopup");
+
+popup.style.display = "block";
+
+/* redirect after 2 seconds */
+
+setTimeout(function(){
+
+window.location.href="pop.html";
+
+},2000);
+
+}

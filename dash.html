@@ -1,81 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Authority Dashboard | CivicSense</title>
-  <link rel="stylesheet" href="dash.css">
+<meta charset="UTF-8">
+<title>CivicSense Authority Dashboard</title>
+<link rel="stylesheet" href="dash.css">
 </head>
+
 <body>
 
-<header class="topbar">
-  <div class="nav-left">
-    <span class="brand">CivicSense</span>
-    <a href="index.html">Home</a>
-    <a href="compR.html">View Complaints</a>
-  </div>
-</header>
+<nav class="navbar">
+        
+            <ul class="nav-links">
+                <div class="logo">CivicSense</div>
+            <a href="index.html">Home</a>
 
-<section class="page-title">
-  <h1>Authority Dashboard</h1>
-</section>
+            <!-- <a href="#how-it-works">How It Work</a> -->
+              <a href="track.html">Track Complaints</a>
+            </ul>
+   </nav>
+  
 
-<main class="dashboard">
 
-  <!-- STATS -->
-  <section class="stats">
-    <div class="card"><h4>Total Complaint</h4><h2>24</h2></div>
-    <div class="card"><h4>Pending</h4><h2 class="yellow">9</h2></div>
-    <div class="card"><h4>High Priority</h4><h2 class="orange">6</h2></div>
-    <div class="card"><h4>Delayed</h4><h2 class="red">3</h2></div>
-  </section>
+<h1 class="title">Authority Dashboard</h1>
 
-  <!-- TABLE -->
-  <section class="table-box">
 
-    <!-- SEARCH -->
-    <div class="table-top">
-      <div class="search-left">
-        <div class="menu-icon">☰</div>
-        <input type="text" placeholder="Search...">
-      </div>
-    </div>
+<div class="cards">
 
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th class="narrow"></th>
-            <th>#</th>
-            <th>Complaint ID</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Area</th>
-            <th>Deadline</th>
-            <th>Priority</th>
-          </tr>
-        </thead>
-        <tbody id="complaintTable"></tbody>
-      </table>
-    </div>
+<div class="card" onclick="filterStatus('all')">
+<h3>Total Complaint</h3>
+<p>24</p>
+</div>
 
-    <!-- FOOTER -->
-    <div class="table-footer">
-      <span>1–10 of 20</span>
-      <div class="footer-right">
-        <span>Rows per page:</span>
-        <select>
-          <option>10</option>
-          <option>20</option>
-        </select>
-        <button>◀</button>
-        <span>1/2</span>
-        <button>▶</button>
-      </div>
-    </div>
+<div class="card pendingCard" onclick="filterStatus('pending')">
+<h3>Pending</h3>
+<p>9</p>
+</div>
 
-  </section>
-</main>
+<div class="card highCard" onclick="filterPriority('high')">
+<h3>High Priority</h3>
+<p>6</p>
+</div>
+
+<div class="card delayedCard" onclick="filterStatus('delayed')">
+<h3>Delayed</h3>
+<p>3</p>
+</div>
+
+</div>
+
+
+
+<div class="table-container">
+
+<div class="table-tools">
+
+<button onclick="deleteSelected()" class="deleteBtn">Delete</button>
+
+<input type="text" id="searchInput" placeholder="Search complaints..." onkeyup="searchTable()">
+
+</div>
+
+
+<table id="complaintTable">
+
+<thead>
+<tr>
+<th></th>
+<th>#</th>
+<th>Complaint ID</th>
+<th>Description</th>
+<th>Status</th>
+<th>Area</th>
+<th>Deadline</th>
+<th>Priority</th>
+<th>View</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><input type="checkbox"></td>
+<td>1</td>
+<td>568423501</td>
+<td>Road problem</td>
+
+<td class="status solved">Solved</td>
+<td>East ward</td>
+<td>2 Dec 2025</td>
+<td>Medium</td>
+<td><button class="viewBtn" onclick="viewComplaint()">View</button></td>
+</tr>
+
+<tr>
+<td><input type="checkbox"></td>
+<td>2</td>
+<td>568423502</td>
+<td>Electric problem</td>
+<td class="status delayed">Delayed</td>
+<td>West ward</td>
+<td>2 Dec 2025</td>
+<td>High</td>
+<td><button class="viewBtn" onclick="viewComplaint()">View</button></td>
+</tr>
+
+<tr>
+<td><input type="checkbox"></td>
+<td>3</td>
+<td>568423503</td>
+<td>Water problem</td>
+<td class="status pending">Pending</td>
+<td>Central ward</td>
+<td>2 Dec 2025</td>
+<td>Low</td>
+<td><button class="viewBtn" onclick="viewComplaint()">View</button></td>
+</tr>
+
+<tr>
+<td><input type="checkbox"></td>
+<td>4</td>
+<td>568423504</td>
+<td>Road problem</td>
+<td class="status solved">Solved</td>
+<td>East ward</td>
+<td>2 Dec 2025</td>
+<td>Medium</td>
+<td><button class="viewBtn" onclick="viewComplaint()">View</button></td>
+</tr>
+
+<tr>
+<td><input type="checkbox"></td>
+<td>5</td>
+<td>568423505</td>
+<td>Electric problem</td>
+<td class="status delayed">Delayed</td>
+<td>West ward</td>
+<td>2 Dec 2025</td>
+<td>High</td>
+<td><button class="viewBtn" onclick="viewComplaint()">View</button></td>
+</tr>
+
+</tbody>
+
+</table>
+
+<div class="pagination">
+
+<button onclick="prevPage()">Prev</button>
+<span id="pageInfo">1 / 2</span>
+<button onclick="nextPage()">Next</button>
+
+</div>
+
+</div>
+
 
 <script src="dash.js"></script>
+
 </body>
 </html>

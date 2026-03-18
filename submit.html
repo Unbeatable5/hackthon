@@ -1,65 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CivicSense Complaint</title>
-    <link rel="stylesheet" href="submit.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CivicSense Complaint</title>
+<link rel="stylesheet" href="submit.css">
 </head>
+
 <body>
-    <header class="navbar">
-    <div class="nav-left">
-        <div class="logo">CivicSense</div>
-        <nav class="nav-links">
+<!-- Navbar -->
+  <nav class="navbar">
+        
+            <ul class="nav-links">
+                <div class="logo">CivicSense</div>
             <a href="index.html">Home</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="track.html">Track Complaints</a>
-        </nav>
-    </div>
-</header>
+
+            <!-- <a href="#how-it-works">How It Work</a> -->
+              <a href="track.html">Track Complaints</a>
+            </ul>
+ </nav>
+    
+
+<!-- <div class="navbar">
+    <div class="nav-left">
+<div class="logo">CivicSense</div>
+
+<div class="navlinks">
+<a href="index.html">Home</a>
+<a href="#">How it works</a>
+<a href="track.html">Track Complaints</a>
+</div>
+</div> -->
 
 
-<div class="container">
-    <h2>Submit a Complaint</h2>
-
-    <label>Complaint Title (optional)</label>
-    <input type="text" placeholder="e.g. Water Issue" />
-
-    <label>Complaint Description *</label>
-    <textarea id="description" placeholder="Describe your issue..."></textarea>
-
-    <button id="continueBtn" class="primary-btn">Continue</button>
-
-    <!-- AI Status Messages -->
-    <!-- AI Thinking Message -->
-<div id="aiThinking" class="ai-thinking hidden">
-    <img src="WhatsApp Image 2026-02-05 at 10.02.58 AM.jpeg" class="ai-icon" alt="AI">
-    <span id="aiText">CivicSense AI Checking the Text..</span>
-    <!-- <div class="loader"></div> -->
+<!-- Loader Screen -->
+<div id="loaderScreen">
+<div class="spinner"></div>
+<p>Analyzing Complaint with AI...</p>
 </div>
 
 
-    <!-- Hidden Fields (Shown After AI Finishes) -->
-    <div id="aiResults" class="hidden">
-        <label>Area *</label>
-        <input type="text" placeholder="e.g. 2-2 Street, Chikodi" />
+<!-- Complaint Card -->
+<div class="card" id="formCard">
 
-        <label>Category</label>
-        <input type="text" id="category" />
+<h2>Submit a Complaint</h2>
 
-        <label>Priority</label>
-        <input type="text" id="priority" />
-        
-        <form action="track.html">
-        <button class="submit-btn">Submit Complaint</button>
-        </form>
-    </div>
-    <!-- <form action="track.html">
-    <button type="submit" class="submit-btn">Submit Complaint</button>
-</form> -->
+<label>Complaint Title (optional)</label>
+<input type="text" id="title" placeholder="e.g. Water Issue">
+
+<label>Complaint Description *</label>
+<textarea id="desc" placeholder="Describe your issue..."></textarea>
+
+<button class="continueBtn" onclick="startAI()">Continue</button>
+
+
+<!-- AI RESULT SECTION -->
+<div id="aiSection">
+
+<button class="retryBtn">Retry with AI</button>
+
+<label>Area *</label>
+<input type="text" placeholder="e.g. 2-2 Street, Chikodi">
+
+<label>Category</label>
+<input type="text" value="Water Supply Issue" disabled>
+
+<label>Priority</label>
+<input type="text" value="Medium" disabled>
+
+<button class="submitBtn" onclick="submitComplaint()">Submit Complaint</button>
+
+</div>
 
 </div>
 
 <script src="submit.js"></script>
+<div id="successPopup">
+✔ Complaint Submitted Successfully
+</div>
+
 </body>
 </html>

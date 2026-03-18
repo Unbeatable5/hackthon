@@ -56,7 +56,7 @@ otpInput.addEventListener("input", () => {
 
 verifyBtn.onclick = () => {
   if (otpInput.value === otp) {
-    msg.style.color = "green";
+    msg.style.color = "#489c4c";
     msg.innerText = "✅ OTP Verified Successfully";
 
     // Redirect after success

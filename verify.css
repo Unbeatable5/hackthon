@@ -1,3 +1,7 @@
+*{
+  margin: 0;
+  padding: 0;}
+
 body {
   font-family: Arial, sans-serif;
   background: white;
@@ -5,33 +9,82 @@ body {
 
 /* Navbar */
 .navbar {
-  background: white;
-  padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+    font-family: Arial, sans-serif; 
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    height: 60px;
+    background-color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 25px;
+.navbar a:hover {
+    color: #489c4c;
 }
 
+
+#how-it-works {
+    scroll-margin-top: 100px;
+}
+#track-complaints {
+    scroll-margin-top: 100px;
+}
+.nav-links{
+     display: flex;
+    gap: 40px;
+     position: sticky;
+     top: 0;
+      list-style: none;
+}
+
+
+    
+
+.nav-links a {
+    margin: 10px 0 0 0;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: black;
+    font-weight: normal;
+    transition: 0.3s;
+}
 .logo {
-  font-weight: bold;
-  color: #3f51b5;
-  font-size: 20px;
+    color: #0d5bed ;
+    font-size:2rem;
+    font-weight: bold;
+    /* padding-bottom: ; */
+    margin-left: 50px;
 }
-
-.nav-left a {
-  text-decoration: none;
-  color: black;
-  font-size: 14px;
+.nav-bar{
+    background-color: var(--secondary-green);
+    margin: 5px 30px 0 0 ;
+    height: 40px;
+    color: var(--light-bg);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
-
 /* Container */
 .container {
   width: 420px;
   margin: 100px auto;
-  text-align: center;
+ 
+}
+.container h2{
+   text-align: center;
+   font-size: 30px;
+   padding: 25px;
+}
+.mbl{
+  line-height: 30px;
+  
+  
 }
 
 .mobile {
@@ -80,11 +133,16 @@ body {
   color: white;
   cursor: pointer;
   border-radius: 4px;
+  height: 40px;
+  border-radius: 5px;
+}
+.btn:hover{
+   transform: scale(1.1);
 }
 
-.green { background: #16a34a; }
+.green { background:#489c4c; }
 .red { background: #dc2626; }
-.blue { background: #1e3a8a; }
+.blue { background:#0d5bed; }
 
 .hidden {
   display: none;
