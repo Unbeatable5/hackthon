@@ -1,4 +1,4 @@
-# CivicSense – Smart City Complaint Management
+# CivicSense –
 
 A full-stack application (CivicSense) designed to bridge the gap between citizens and municipal authorities. Features include AI-based complaint classification, real-time SLA tracking, and an interactive authority dashboard.
 
