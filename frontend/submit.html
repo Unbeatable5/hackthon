@@ -14,110 +14,115 @@
       <div class="logo">CivicSense</div>
       <a href="index.html">Home</a>
       <a href="track.html">Track Complaints</a>
-      <a href="index.html">View Nearby Complaints</a>
+      <a href="nearby.html">View Nearby Complaints</a>
     </ul>
   </nav>
 
   <div class="container">
-    <div class="box" id="leftBox">
-      <h2>Submit Your Issue</h2>
+    <div class="dashboard-main">
+      <div class="box" id="leftBox">
+        <h2>Submit Your Issue</h2>
 
-      <div class="form-group">
-        <label>Complaint Title <span class="optional">(optional)</span></label>
-        <input type="text" id="title" placeholder="e.g. Broken street light">
+        <div class="form-group">
+          <label>Complaint Title <span class="optional">(optional)</span></label>
+          <input type="text" id="title" placeholder="e.g. Broken street light">
+        </div>
+
+        <div class="form-group">
+          <label>Complaint Description <span class="required">*</span></label>
+          <textarea id="desc" placeholder="Describe the issue in detail..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Upload Image <span class="optional">(optional)</span></label>
+          <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+            <span class="material-icons-outlined">upload</span>
+            <p id="uploadText" style="font-size: .9rem;">Drag & Drop or Click to Upload</p>
+            <input type="file" id="fileInput" accept="image/*" class="hidden">
+          </div>
+        </div>
+
+        <button id="actionBtn" class="btn green" onclick="handleClick()">Continue with AI</button>
       </div>
 
-      <div class="form-group">
-        <label>Complaint Description <span class="required">*</span></label>
-        <textarea id="desc" placeholder="Describe the issue in detail..."></textarea>
-      </div>
+      <div class="box rightBox hidden" id="rightBox">
+        <h3>AI Initial Analysis</h3>
+        <div class="form-group">
+          <label>Complaint ID</label>
+          <input type="text" id="cid_input" readonly>
+        </div>
+        <div class="form-group">
+          <label>Area / Location <span class="required">*</span></label>
+          <div class="gps-group">
+            <input type="text" id="area" placeholder="e.g. Main Street, Sector 4">
+            <button class="btn gps-btn" onclick="detectGPS()"><span class="material-icons-outlined">my_location</span></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input type="text" id="category" readonly>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <input type="text" id="priority" readonly>
+        </div>
+        <button type="button" class="btn blue" onclick="submitComplaint(event)">Confirm & Submit Complaint</button>
 
-      <div class="form-group">
-        <label>Upload Image <span class="optional">(optional)</span></label>
-        <div class="upload-area">
-          <span class="material-icons-outlined">upload</span>
-          <p style="font-size: .9rem;">Drag & Drop</p>
+      </div>
+    </div>
+
+    <div class="dashboard-sidebar">
+      <div class="box-complaints">
+        <h3>Your Recent History</h3>
+        <div id="historyList">
+          <!-- Dynamic cards -->
+          <p style="color:#64748b; font-size:0.9rem; text-align:center; padding:20px;">Loading history...</p>
         </div>
       </div>
-
-      <button id="actionBtn" class="btn green" onclick="handleClick()">Continue</button>
-    </div>
-
-    <div class="box rightBox hidden" id="rightBox">
-      <h3>Complaint Details</h3>
-      <div class="form-group">
-        <label>Complaint ID</label>
-        <input type="text" id="cid_input" readonly>
-      </div>
-      <div class="form-group">
-        <label>Area *</label>
-        <input type="text" id="area" placeholder="area">
-      </div>
-      <div class="form-group">
-        <label>Category</label>
-        <input type="text" id="category" readonly>
-      </div>
-      <div class="form-group">
-        <label>Priority</label>
-        <input type="text" id="priority" readonly>
-      </div>
-      <button class="btn blue" onclick="submitComplaint()">Submit Complaint</button>
-    </div>
-
-    <div class="box-complaints">
-      <h3>Your Complaints</h3>
-      <div class="card">
-      <p><b>Water Issue</b> <button>View</button></p>
-      <p>Date: 12-04-2024</p>
-      <p class="status">Solved</p>
-    </div>
-
-    <div class="card">
-      <p><b>Road Issue</b> <button>View</button></p>
-      <p>Date: 10-04-2024</p>
-      <p class="status">Solved</p>
-    </div>
-
-     <div class="card">
-      <p><b>Water Issue</b> <button>View</button></p>
-      <p>Date: 12-04-2024</p>
-      <p class="status">Solved</p>
-    </div>
-
-<div class="card">
-      <p><b>Road Issue</b> <button>View</button></p>
-      <p>Date: 10-04-2024</p>
-      <p class="status">Solved</p>
-    </div>
     </div>
   </div>
 
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <div id="aiText">CivicSense AI Checking Text...</div>
-  </div>
-
-  <div class="popup" id="popup">
-    <div class="popup-box">
-      <h2 class="success-title">Complaint Submitted</h2>
-      <p class="success-msg">
-        Your Complaint has been successfully submitted. You will receive a notification once it has been processed. Thank you for your patience!
-      </p>
-      
-      <div class="id-container">
-        <span>Complaint Id: <b id="displayID" style="color:#1E3A8A">4F6RHIG94GF</b></span>
-        <button class="copy-link" onclick="copyID()">COPY</button>
-      </div>
-
-      <div class="popup-btns">
-         <form action="newtrack.html">
-        <button class="btn blue-fill" >Track Complaint</button>
-        </form>
-        <button class="btn white-outline" onclick="closePopup()">Back to Home</button>
-      </div>
+  <!-- REBUILT LOADING SCREEN (DEEP AI EFFECT) -->
+  <div id="aiLoadingScreen" style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.98); backdrop-filter:blur(15px); z-index:10000; flex-direction:column; justify-content:center; align-items:center;">
+    <div class="spinner" style="width:70px; height:70px; border:6px solid #e2e8f0; border-top-color:#489c4c; border-radius:50%; animation:spin 1s linear infinite;"></div>
+    <h2 id="aiStatusTitle" style="color:#1E3A8A; margin-top:25px; font-family:'Inter',sans-serif;">CivicSense AI Engine</h2>
+    <p id="aiStatusDetail" style="color:#64748b; font-weight:500; font-family:'Inter',sans-serif; margin-top:10px;">Initializing neural classification...</p>
+    <div style="width:280px; height:6px; background:#f1f5f9; border-radius:3px; margin-top:35px; overflow:hidden; border:1px solid #e2e8f0;">
+        <div id="aiProgressBar" style="width:0%; height:100%; background:linear-gradient(90deg, #489c4c, #10b981); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);"></div>
     </div>
   </div>
 
+  <!-- REBUILT SUCCESS POPUP (ROCK SOLID) -->
+  <div id="finalSuccessPopup" style="display:none; position:fixed; inset:0; background:rgba(15, 23, 42, 0.8); backdrop-filter:blur(8px); z-index:10001; justify-content:center; align-items:center; padding:20px;">
+      <div style="background:white; padding:45px 30px; border-radius:32px; width:100%; max-width:500px; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); transform:translateY(0); animation: modalSlideUp 0.5s cubic-bezier(0.19, 1, 0.22, 1);">
+          <div style="background:linear-gradient(135deg, #489c4c, #10b981); width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 25px; box-shadow:0 10px 20px rgba(72,156,76,0.3);">
+              <span class="material-icons-outlined" style="color:white; font-size:52px;">check_circle</span>
+          </div>
+          <h2 style="color:#1E3A8A; font-size:1.8rem; margin-bottom:12px; font-family:'Inter',sans-serif; letter-spacing:-0.5px;">Complaint Logged!</h2>
+          <p style="color:#64748b; margin-bottom:30px; font-size:1.05rem; line-height:1.6;">Your issue has been successfully captured and routed to the <b id="finalDeptShow">Department</b> for immediate action.</p>
+          
+          <div style="background:#f8fafc; padding:18px; border-radius:20px; border:1px solid #e2e8f0; margin-bottom:35px; display:flex; justify-content:center; align-items:center; gap:12px;">
+              <span style="font-size:0.95rem; color:#64748b; font-weight:500;">Ref ID:</span>
+              <strong id="finalID" style="color:#1E3A8A; font-size:1.3rem; font-family:monospace; letter-spacing:1px;">cv...</strong>
+              <button onclick="copyID()" style="border:none; background:none; cursor:pointer; color:#10b981; display:flex; padding:5px; border-radius:8px; transition:0.2s;" onmouseover="this.style.background='#ecfdf5'" onmouseout="this.style.background='none'"><span class="material-icons-outlined">content_copy</span></button>
+          </div>
+
+          <div style="display:flex; gap:15px;">
+              <button onclick="location.href='newtrack.html?id='+document.getElementById('finalID').innerText" class="btn blue" style="flex:1; margin:0; padding:15px; border-radius:16px;">Track Status</button>
+              <button onclick="location.href='index.html'" class="btn" style="flex:1; background:#f1f5f9; color:#475569; border:1px solid #e2e8f0; margin:0; padding:15px; border-radius:16px;">Return Home</button>
+          </div>
+      </div>
+  </div>
+
+  <style>
+    @keyframes modalSlideUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+
+
+  <script src="api_client.js"></script>
   <script src="submit.js"></script>
 </body>
 </html>

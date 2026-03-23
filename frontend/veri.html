@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>CivicSense - Authority Verification</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="veri.css">
 </head>
 <body>
@@ -20,41 +22,46 @@
              </nav>
     
 <!-- MAIN -->
-<main class="container">
-  <h1>Authority Verification</h1>
+<main class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <span class="material-icons-outlined" style="font-size: 54px; color: #1E3A8A; margin-bottom:10px;">admin_panel_settings</span>
+      <h2>Authority Access</h2>
+      <p>Secure Government Terminal</p>
+    </div>
 
-  <!-- FORM -->
-  <form id="verifyForm">
-    <label>Authority ID / Email</label>
-    <input
-      type="text"
-      id="authId"
-      placeholder="Enter your authority ID or email"
-      required
-    >
+    <!-- FORM -->
+    <form id="verifyForm" class="minimal-form">
+      <div class="input-group">
+        <span class="material-icons-outlined input-icon">badge</span>
+        <input type="text" id="authId" placeholder="Authority ID / Email" required>
+      </div>
 
-    <label>Password</label>
-    <input
-      type="password"
-      id="password"
-      placeholder="Enter your password"
-      required
-    >
+      <div class="input-group">
+        <span class="material-icons-outlined input-icon">lock</span>
+        <input type="password" id="password" placeholder="Secure Password" required>
+      </div>
 
-    <label>Department</label>
-    <select id="department" required>
-      <option value="">Select Your Department</option>
-      <option>Water Supply</option>
-      <option>Electricity</option>
-      <option>Municipality</option>
-    </select>
+      <div class="input-group">
+        <span class="material-icons-outlined input-icon">account_balance</span>
+        <select id="department" required>
+          <option value="" disabled selected>Select Department Hub</option>
+          <option value="water">Water Supply</option>
+          <option value="road">Road & Infrastructure</option>
+          <option value="electrical">Electricity</option>
+          <option value="sanitation">Sanitation & Garbage</option>
+          <option value="administration">Administration</option>
+        </select>
+      </div>
 
-    <button type="submit" class="dash-btn">Verify</button>
-  </form>
+      <button type="submit" class="auth-btn">Authenticate <span class="material-icons-outlined" style="font-size:18px; vertical-align:middle; line-height:0; margin-left:5px;">arrow_forward</span></button>
+    </form>
 
-  <p id="msg"></p>
+    <p id="msg" class="status-msg"></p>
+  </div>
 </main>
 
+<script src="api_client.js"></script>
 <script src="veri.js"></script>
 </body>
 </html>

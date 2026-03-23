@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicSense - Nearby Complaints</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="nearby.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">CivicSense</div>
+    <ul class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="track.html">Track Complaints</a>
+      <a href="nearby.html" class="active">Nearby Complaints</a>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-section">
+    <div class="hero-inner">
+      <span class="material-icons-outlined hero-icon">location_on</span>
+      <h1>View Nearby Complaints</h1>
+      <p>Discover civic issues reported in your locality and track their resolution progress in real-time.</p>
+    </div>
+  </section>
+
+  <!-- SEARCH PANEL -->
+  <div class="search-panel">
+    <div class="search-box-wrap">
+
+      <div class="input-row">
+        <div class="input-group">
+          <span class="material-icons-outlined">location_on</span>
+          <input type="text" id="areaInput" placeholder="Enter Area / Locality (e.g. Sector 4)">
+        </div>
+
+        <div class="input-group">
+          <span class="material-icons-outlined">category</span>
+          <select id="categorySelect">
+            <option value="all">All Categories</option>
+            <option>Road Hazard</option>
+            <option>Water Supply</option>
+            <option>Electrical</option>
+            <option>Sanitation</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <span class="material-icons-outlined">swap_vert</span>
+          <select id="statusFilter">
+            <option value="all">All Statuses</option>
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Solved</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-locate" onclick="useMyLocation()">
+          <span class="material-icons-outlined">my_location</span> Use My Location
+        </button>
+        <button class="btn-search" onclick="searchNearby()">
+          <span class="material-icons-outlined">search</span> Search Complaints
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS AREA -->
+  <div class="results-area" id="resultsArea" style="display:none;">
+
+    <div class="results-header">
+      <h2 id="resultsTitle">Showing results for East Ward, 400001</h2>
+      <span class="result-count" id="resultCount">4 complaints found</span>
+    </div>
+
+    <div class="complaint-grid" id="complaintGrid">
+      <!-- Cards will be injected dynamically -->
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <span class="material-icons-outlined" style="font-size: 70px; color: #cbd5e1;">search_off</span>
+    <h3 id="emptyTitle">No complaints found nearby</h3>
+    <p id="emptyDesc">Try a different pincode or select a different ward.</p>
+  </div>
+
+  <script src="api_client.js"></script>
+  <script src="nearby.js"></script>
+</body>
+</html>
+</body>
+</html>

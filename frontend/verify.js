@@ -1,6 +1,5 @@
-let otp = "";
-let countdown;
 let timeLeft = 30;
+let countdown;
 
 const generateBtn = document.getElementById("generateBtn");
 const verifyBtn = document.getElementById("verifyBtn");
@@ -16,85 +15,121 @@ function focusOTP() {
   otpInput.focus();
 }
 
-// VALIDATION
 function isValid(input) {
-  const phone = /^\d{10}$/;
   const email = /^\S+@\S+\.\S+$/;
-  return phone.test(input) || email.test(input);
+  const phone = /^\d{10}$/;
+  return email.test(input) || phone.test(input);
 }
 
-// GENERATE OTP
-generateBtn.onclick = () => {
-  let input = userInput.value.trim();
+// GENERATE OTP (Register/Login)
+generateBtn.onclick = async () => {
+    let identifier = userInput.value.trim();
 
-  if (!isValid(input)) {
-    msg.style.color = "red";
-    msg.innerText = "Enter valid phone number or email";
-    return;
-  }
+    if (!isValid(identifier)) {
+        msg.style.color = "red";
+        msg.innerText = "Enter a valid email or 10-digit phone number";
+        return;
+    }
 
-  msg.innerText = "";
-  loading.classList.remove("hidden");
-  otpWrapper.classList.add("hidden");
-  verifyBtn.classList.add("hidden");
+    msg.innerText = "";
+    loading.classList.remove("hidden");
+    otpWrapper.classList.add("hidden");
+    verifyBtn.classList.add("hidden");
 
-  setTimeout(() => {
-    loading.classList.add("hidden");
+    try {
+        const response = await fetch("http://localhost:5000/api/auth/citizen/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identifier, name: identifier.split('@')[0] })
+        });
+        const result = await response.json();
 
-    otp = Math.floor(100000 + Math.random() * 900000).toString();
-    alert("Demo OTP: " + otp);
+        loading.classList.add("hidden");
+        if (response.ok) {
+            msg.style.color = "#489c4c";
+            msg.innerText = result.message;
+            
+            if (result.isMock) {
+                alert("HACKATHON ALERT: SMTP Error detected. Check your Backend Terminal Console for the OTP!");
+            }
 
-    generateBtn.innerText = "Resend OTP";
-    generateBtn.classList.remove("green");
-    generateBtn.classList.add("red");
+            generateBtn.innerText = "Resend OTP";
+            generateBtn.classList.replace("green", "red");
 
-    otpWrapper.classList.remove("hidden");
-    verifyBtn.classList.remove("hidden");
-
-    startTimer();
-
-    otpInput.value = "";
-    boxes.forEach(b => b.innerText = "");
-    otpInput.focus();
-  }, 2000);
+            otpWrapper.classList.remove("hidden");
+            verifyBtn.classList.remove("hidden");
+            startTimer();
+            otpInput.value = "";
+            boxes.forEach(b => b.innerText = "");
+            otpInput.focus();
+        } else {
+            msg.style.color = "red";
+            msg.innerText = result.error || "Failed to send OTP";
+        }
+    } catch (error) {
+        loading.classList.add("hidden");
+        msg.style.color = "red";
+        msg.innerText = "Server unreachable";
+    }
 };
 
-// OTP INPUT DISPLAY
 otpInput.addEventListener("input", () => {
   otpInput.value = otpInput.value.replace(/\D/g, "").slice(0, 6);
-
   boxes.forEach((box, i) => {
     box.innerText = otpInput.value[i] || "";
   });
 });
 
-// VERIFY OTP (manual only)
-verifyBtn.onclick = () => {
-  if (otpInput.value === otp) {
-    msg.style.color = "#489c4c";
-    msg.innerText = "✅ OTP Verified Successfully";
+// VERIFY OTP & LOGIN
+verifyBtn.onclick = async () => {
+    const identifier = userInput.value.trim();
+    const otp = otpInput.value;
 
-    setTimeout(() => {
-      window.location.href = "submit.html";
-    }, 1500);
-  } else {
-    msg.style.color = "red";
-    msg.innerText = "❌ Invalid OTP";
-  }
+    if (otp.length !== 6) {
+        msg.style.color = "red";
+        msg.innerText = "Enter 6-digit OTP";
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:5000/api/auth/citizen/verify-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identifier, otp })
+        });
+        const result = await response.json();
+
+        if (response.ok) {
+            msg.style.color = "#489c4c";
+            msg.innerText = "✅ Successfully Verified";
+            
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('user', JSON.stringify(result.citizen));
+            localStorage.setItem('isVerified', 'true');
+
+            setTimeout(() => {
+                window.location.href = "submit.html";
+            }, 1000);
+        } else {
+            msg.style.color = "red";
+            msg.innerText = "❌ " + (result.error || "Invalid OTP");
+        }
+    } catch (error) {
+        msg.style.color = "red";
+        msg.innerText = "Server connection error";
+    }
 };
 
-// TIMER
 function startTimer() {
   timeLeft = 30;
   timerText.classList.remove("hidden");
-
+  if (countdown) clearInterval(countdown);
   countdown = setInterval(() => {
     timeLeft--;
     timerText.innerText = "Resend OTP in " + timeLeft + "s";
-
     if (timeLeft <= 0) {
       clearInterval(countdown);
       timerText.innerText = "You can resend OTP";
     }
   }, 1000);
-}
+}

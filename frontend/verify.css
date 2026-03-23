@@ -90,22 +90,43 @@ body {
 /* Container */
 .container {
   width: 420px;
+  max-width: 90%;
   margin: 100px auto;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(30, 58, 138, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .container h2 {
   text-align: center;
-  font-size: 30px;
-  padding: 25px;
+  font-size: 28px;
+  padding-bottom: 25px;
+  color: #1E3A8A;
 }
 
 .mobile {
   width: 100%;
-  padding: 12px;
-  border: none;
-  background: #f1f1f1;
+  padding: 15px;
+  border: 2px solid transparent;
+  background: rgba(241, 241, 241, 0.7);
   margin: 15px 0;
-  border-radius: 8px;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.mobile:focus {
+  outline: none;
+  border-color: #1E3A8A;
+  background: white;
+  box-shadow: 0 0 15px rgba(30, 58, 138, 0.2);
 }
 
 /* OTP */
@@ -125,36 +146,62 @@ body {
 .otp-boxes {
   display: flex;
   justify-content: space-between;
-  background: #f1f1f1;
-  padding: 15px 20px;
+  background: transparent;
+  padding: 15px 0;
   border-radius: 6px;
+  gap: 10px;
 }
 
 .otp-boxes div {
-  width: 40px;
-  height: 45px;
-  border-bottom: 2px solid black;
-  font-size: 22px;
+  flex: 1;
+  height: 55px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  font-size: 24px;
   font-weight: bold;
-  line-height: 45px;
+  line-height: 50px;
+  background: rgba(255,255,255,0.6);
+  transition: all 0.3s ease;
+  color: #1E3A8A;
+}
+
+.otp-wrapper:focus-within .otp-boxes div {
+  border-color: #1E3A8A;
+  box-shadow: 0 0 10px rgba(30, 58, 138, 0.3);
+  animation: pulseBox 1.5s infinite alternate;
+}
+
+@keyframes pulseBox {
+  from { box-shadow: 0 0 5px rgba(30, 58, 138, 0.2); }
+  to { box-shadow: 0 0 12px rgba(72, 156, 76, 0.4); border-color: #489c4c; }
 }
 
 /* Buttons */
 .btn {
-  padding: 10px 25px;
+  width: 100%;
+  padding: 12px 25px;
   border: none;
   color: white;
   cursor: pointer;
-  border-radius: 5px;
-  height: 40px;
+  border-radius: 10px;
+  height: auto;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s;
 }
 
 .btn:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
 .green {
   background: #489c4c;
+  animation: aiPulse 2s infinite;
+}
+
+.green:hover {
+  box-shadow: 0 0 15px #489c4c;
 }
 
 .red {
@@ -163,6 +210,23 @@ body {
 
 .blue {
   background:#1E3A8A;
+  animation: aiPulseBlue 2s infinite;
+}
+
+.blue:hover {
+  box-shadow: 0 0 15px #1E3A8A;
+}
+
+@keyframes aiPulse {
+  0% { box-shadow: 0 0 0 0 rgba(72, 156, 76, 0.6); }
+  70% { box-shadow: 0 0 15px 10px rgba(72, 156, 76, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(72, 156, 76, 0); }
+}
+
+@keyframes aiPulseBlue {
+  0% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.6); }
+  70% { box-shadow: 0 0 15px 10px rgba(30, 58, 138, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0); }
 }
 
 .hidden {
@@ -174,6 +238,13 @@ body {
   margin: 15px 0;
   color: #1E3A8A;
   font-weight: bold;
+  animation: scanning 1.5s infinite linear;
+}
+
+@keyframes scanning {
+  0% { opacity: 0.5; color: #1E3A8A; }
+  50% { opacity: 1; color: #489c4c; text-shadow: 0 0 8px #489c4c; }
+  100% { opacity: 0.5; color: #1E3A8A; }
 }
 
 #timer {

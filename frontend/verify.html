@@ -18,10 +18,10 @@
   </nav>
 
   <div class="container">
-    <h2>Verification</h2>
+    <h2>Citizen Login / Register</h2>
 
-    <label>Mobile Number or Email</label>
-    <input id="userInput" class="mobile" type="text" placeholder="Enter phone or email">
+    <label>Mobile Number or Email Address</label>
+    <input id="userInput" class="mobile" type="text" placeholder="e.g. 9876543210 or user@example.com">
 
     <button id="generateBtn" class="btn green">Generate OTP</button>
 
@@ -41,12 +41,13 @@
       </div>
     </div>
 
-    <button id="verifyBtn" class="btn blue hidden">Verify Now</button>
+    <button id="verifyBtn" class="btn blue hidden">Verify & Login</button>
 
     <p id="timer" class="hidden"></p>
     <p id="msg"></p>
   </div>
 
+  <script src="api_client.js"></script>
   <script src="verify.js"></script>
 </body>
 

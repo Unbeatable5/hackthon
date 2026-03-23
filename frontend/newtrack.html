@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Track Complaint Status</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="newtrack.css">
 </head>
 
@@ -16,7 +18,7 @@
             <div class="logo">CivicSense</div>
             <a href="index.html">Home</a>
             <a href="track.html">Track Complaints</a>
-      <a href="index.html">View Nearby Complaints</a>
+      <a href="nearby.html">View Nearby Complaints</a>
 
             <!-- <a href="#how-it-works">How It Work</a> -->
             <!-- <a href="track.html">Track Complaints</a> -->
@@ -34,35 +36,9 @@
         </div>
 
         <div id="result" style="display:none;">
-            <div class="section-title">Water Issue</div>
-
-            <div class="table-box">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Complaint ID</th>
-                            <th>Status</th>
-                            <th>Department</th>
-                            <th>Deadline</th>
-                            <th>Remaining Days</th>
-                            <th>Date</th>
-                            <th>Delayed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td id="cid"></td>
-                            <td id="status"></td>
-                            <td>Water Issues</td>
-                            <td>20 Aug 2026</td>
-                            <td>5</td>
-                            <td>11 Aug 2026</td>
-                            <td id="delay"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <!-- The table above was redundant, we use the detailed card below for all info -->
         </div>
+
 
         <div class="back-btn">
             <button onclick="goHome()">Back to Home</button>
@@ -70,19 +46,31 @@
     </div>
 
      <div class="card" id="resultCard">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+        <div class="section-badge" style="display:inline-block; padding:6px 14px; background:rgba(30,58,138,0.1); color:#1E3A8A; border-radius:20px; font-weight:600; font-size:12px; text-transform:uppercase;">Live AI Tracking</div>
+        <div class="sla-badge" style="padding:6px 14px; background:rgba(231,76,60,0.1); color:#e74c3c; border-radius:20px; font-weight:800; font-size:12px; display:flex; align-items:center; gap:5px;"><span class="material-icons-outlined" style="font-size:16px;">warning</span> SLA Escalate (24h breach)</div>
+    </div>
+    
     <div class="fields">
       <div class="field"><span class="label">Complaint Id :</span><span class="value" id="f-id">ew8debg3uy3b</span></div>
       <div class="field"><span class="label">Priority:</span><span class="value" id="f-priority">High</span></div>
 
       <div class="field"><span class="label">Title:</span><span class="value" id="f-title">Water Issue</span></div>
       <div class="field"><span class="label">Category:</span><span class="value" id="f-category">Water</span></div>
+      <div class="field"><span class="label">Area / Locality:</span><span class="value" id="f-area">Sector 4</span></div>
+
 
       <div class="field"><span class="label">Date Submitted:</span><span class="value" id="f-date">12-04-2024</span></div>
       <div class="field"><span class="label">Deadline:</span><span class="value" id="f-deadline">14-04-2024</span></div>
 
-      <div class="field"><span class="label">Status:</span><span class="value" id="f-status">Solved</span></div>
+      <div class="field"><span class="label">Status:</span><span class="value" id="f-status" style="color: #489c4c; font-weight:bold;">Solved</span></div>
       <div class="field"><span class="label">Assigned Department:</span><span class="value" id="f-dept">Water</span></div>
+      <div id="citizen-info" style="display:none; margin-top:10px; padding-top:10px; border-top:1px dashed #e2e8f0;">
+          <div class="field"><span class="label">Reported By:</span><span class="value" id="f-citizen-name">John Doe</span></div>
+          <div class="field"><span class="label">Contact:</span><span class="value" id="f-citizen-contact">+91 9876543210</span></div>
+      </div>
     </div>
+
 
     <div class="desc-label">Complaint Description</div>
     <div class="desc-text" id="f-desc">
@@ -91,25 +79,79 @@
       printer took a galley of type and scrambled it to make a type specimen book.
     </div>
 
+    <!-- Citizen Evidence properly synced to display original photo -->
+    <div class="proof-box" id="citizen-evidence" style="background: rgba(255,255,255,0.7); border-color: rgba(30,58,138,0.15);">
+        <div class="desc-label" style="display: flex; align-items:center; gap: 8px; color:#1E3A8A;">
+        <span class="material-icons-outlined" style="color: #1E3A8A; font-size: 20px;">image</span> 
+        Original Citizen Submission
+        </div>
+        <div class="proof-content" style="margin-top: 15px;">
+        <img src="photo9.jpeg" alt="Original Submission" class="proof-image">
+        <div class="proof-details">
+            <p><strong>Metadata:</strong> Verified EXIF Integrity.</p>
+            <p><strong>Timestamp:</strong> Generated at exact reported coordinates.</p>
+        </div>
+        </div>
+    </div>
+
+    <!-- Department Message -->
+    <div class="proof-box" id="f-message" style="display: none; background: rgba(30,58,138,0.05); border-color: rgba(30,58,138,0.2);">
+      <div class="desc-label" style="display: flex; align-items:center; gap: 8px; color: #1E3A8A;">
+        <span class="material-icons-outlined" style="color: #1E3A8A; font-size: 20px;">maps_ugc</span> 
+        Message from Department
+      </div>
+      <div class="proof-content" style="margin-top: 5px;">
+        <div class="proof-details">
+          <p id="f-msg-text" style="font-weight: 500; font-size: 14.5px;">Your complaint has been reviewed and a team is being dispatched to assess the site tomorrow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="proof-box" id="f-proof" style="display: none;">
+      <div class="desc-label" style="display: flex; align-items:center; gap: 8px;">
+        <span class="material-icons-outlined" style="color: #489c4c; font-size: 20px;">verified</span> 
+        Department Resolution Proof
+      </div>
+      <div class="proof-content">
+        <img src="photo1.jpeg" alt="Resolved Issue" class="proof-image">
+        <div class="proof-details">
+          <p>This issue was marked as resolved by the municipal department. Automated AI verification confirms structural repairs are complete.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Automation Logs -->
+    <div class="proof-box" id="system-logs" style="background: rgba(248,250,252,0.8); border: 1px dashed #cbd5e1; margin-bottom:30px;">
+        <div class="desc-label" style="display: flex; align-items:center; gap: 8px; font-size:0.9rem; color:#475569;">
+        <span class="material-icons-outlined" style="color: #475569; font-size: 18px;">history</span> 
+        Automated System Logs
+        </div>
+        <ul style="list-style:none; font-size:0.85rem; color:#64748b; margin-top:10px; padding-left:5px; line-height:1.7;">
+            <li><span class="material-icons-outlined" style="font-size:12px; vertical-align:middle; color:#1E3A8A;">mark_email_read</span> <strong>System:</strong> Confirmation SMS + Email dispatched to citizen (+91-7474****19).</li>
+            <li><span class="material-icons-outlined" style="font-size:12px; vertical-align:middle; color:#e74c3c;">notifications_active</span> <strong>AI Watchdog:</strong> +24h passed without department review view. Auto-reminders fired to Local Engineers.</li>
+            <li><span class="material-icons-outlined" style="font-size:12px; vertical-align:middle; color:#e74c3c;">swap_calls</span> <strong>AI Watchdog:</strong> SLA Breached. Dynamic routing enforced. Complaint natively escalated to Higher Authority.</li>
+        </ul>
+    </div>
+
     <!-- Stepper -->
     <div class="stepper">
       <div class="step">
-        <div class="step-box active"></div>
-        <div class="step-label">submitted</div>
+        <div class="step-box active"><span class="material-icons-outlined">upload_file</span></div>
+        <div class="step-label">Submitted</div>
       </div>
-      <div class="step-line"></div>
+      <div class="step-line active-line"></div>
       <div class="step">
-        <div class="step-box active"></div>
-        <div class="step-label">viewed</div>
+        <div class="step-box active"><span class="material-icons-outlined">visibility</span></div>
+        <div class="step-label">Viewed</div>
       </div>
-      <div class="step-line"></div>
+      <div class="step-line active-line"></div>
       <div class="step">
-        <div class="step-box active"></div>
-        <div class="step-label">In progress</div>
+        <div class="step-box active"><span class="material-icons-outlined">engineering</span></div>
+        <div class="step-label">In Progress</div>
       </div>
-      <div class="step-line"></div>
+      <div class="step-line active-line"></div>
       <div class="step">
-        <div class="step-box active"></div>
+        <div class="step-box active"><span class="material-icons-outlined">check_circle</span></div>
         <div class="step-label">Resolved</div>
       </div>
     </div>

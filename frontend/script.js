@@ -20,16 +20,29 @@ input.addEventListener("keypress", e => {
     if (e.key === "Enter") sendMessage();
 });
 
-function sendMessage() {
+async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
     addMessage(text, "user-msg");
     input.value = "";
 
-    setTimeout(() => {
-        addMessage(botReply(text), "bot-msg");
-    }, 700);
+    const typingMsg = addMessage("CivicSense AI is typing...", "bot-msg-typing");
+
+    try {
+        const response = await fetch("http://localhost:5001/ml/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text })
+        });
+        const result = await response.json();
+        
+        typingMsg.remove();
+        addMessage(result.response || "Something went wrong.", "bot-msg");
+    } catch (error) {
+        typingMsg.remove();
+        addMessage("I'm currently disconnected from my neural core. Please try again later.", "bot-msg");
+    }
 }
 
 function addMessage(text, className) {
@@ -38,6 +51,7 @@ function addMessage(text, className) {
     msg.textContent = text;
     chatBody.appendChild(msg);
     chatBody.scrollTop = chatBody.scrollHeight;
+    return msg;
 }
 
 function quickReply(text) {
@@ -45,15 +59,17 @@ function quickReply(text) {
     sendMessage();
 }
 
-function botReply(input) {
-    input = input.toLowerCase();
-
-    if (input.includes("complaint"))
-        return "Sure! Click the 'Complaint Now' button on the homepage to submit your issue.";
-    if (input.includes("track"))
-        return "You can track your complaint status in the 'Track Complaints' section using your ID.";
-    if (input.includes("emergency"))
-        return "For urgent civic issues, please call your local emergency helpline immediately.";
-    
-    return "I'm here to help with civic complaints, tracking, and services. Could you give more details?";
+function handleMainAction() {
+    if (localStorage.getItem('token')) {
+        window.location.href = 'submit.html';
+    } else {
+        window.location.href = 'verify.html';
+    }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem('token')) {
+        const navBtn = document.getElementById("nav-action-btn");
+        if (navBtn) navBtn.innerText = "Submit Complaint";
+    }
+});

@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI-Powered Digital Grievance System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,19 +16,14 @@
 
 
   <nav class="navbar">
-
     <ul class="nav-links">
       <div class="logo">CivicSense</div>
       <a href="#top">Home</a>
-
       <a href="#how">How It Work</a>
       <a href="track.html">Track Complaints</a>
     </ul>
-
-    <form action="verify.html">
-      <button class="nav-bar">Verify Now</button>
+    <button id="nav-action-btn" class="nav-bar" onclick="handleMainAction()">Verify Now</button>
   </nav>
-  </form>
 
 
   <div class="container" id="top">
@@ -40,85 +37,81 @@
     </div>
 
 
-    <form action="verify.html">
-      <button class="title-bar">Complaint Now</button>
-    </form>
-    <!-- <div i></div> -->
 
+    <button id="hero-action-btn" class="title-bar" onclick="handleMainAction()">Complaint Now</button>
 
+  </div>
+  </div>
 
+  <!-- Chat Toggle Button (fixed, outside all containers) -->
+  <div id="chat-toggle" title="Chat with CivicSense AI">
+    <div class="orb-ring"></div>
+    <span class="material-icons-outlined"
+      style="font-size:26px; color:white; position:relative; z-index:2;">smart_toy</span>
+  </div>
 
-    <!-- Chat Toggle Button -->
-    <div id="chat-toggle">
-      <img src="img/image-ezgif.com-gif-maker.gif" alt="">
+  <!-- Chat Window (fixed, outside all containers) -->
+  <div id="chat-window">
+    <div class="chat-header">
+      <div class="ai-avatar-sm">
+        <span class="material-icons-outlined" style="font-size:20px; color:white;">smart_toy</span>
+      </div>
+      <div class="agent-info">
+        <div class="agent-name">CivicSense AI</div>
+        <div class="agent-status"><span class="status-dot"></span> Online &amp; Ready</div>
+      </div>
+      <span id="chat-close" title="Close"><span class="material-icons-outlined"
+          style="font-size:20px;">close</span></span>
     </div>
 
-    <!-- Chat Window -->
-    <div id="chat-window">
-      <div class="chat-header">
-        <!-- <img src="download.png" class="agent-img"> -->
-        <div class="agent-info">
-          <div class="agent-name">CivicSense AI</div>
-          <div class="agent-status">We are online!</div>
-        </div>
-        <span id="chat-close">✕</span>
+    <div class="chat-body" id="chat-body">
+      <div class="bot-msg">
+        Hey there! 👋 I'm your <strong>CivicSense AI</strong> assistant. How can I help you today?
       </div>
-
-      <div class="chat-body" id="chat-body">
-        <div class="bot-msg">
-          Hi there! 👋 Welcome to CivicSense. How can we help you today?
-        </div>
-
-        <div class="quick-replies">
-          <button onclick="quickReply('File Complaint')">File Complaint</button>
-          <button onclick="quickReply('Track Status')">Track Status</button>
-          <button onclick="quickReply('Emergency Issue')">Emergency</button>
-          <button onclick="quickReply('Other Help')">Other Help</button>
-        </div>
-      </div>
-
-      <div class="chat-footer">
-        <input type="text" id="user-input" placeholder="Enter your message..." />
-        <button id="send-btn">➤</button>
+      <div class="quick-replies">
+        <button onclick="quickReply('File Complaint')">🗂 File Complaint</button>
+        <button onclick="quickReply('Track Status')">📍 Track Status</button>
+        <button onclick="quickReply('Emergency Issue')">🚨 Emergency</button>
+        <button onclick="quickReply('Other Help')">💬 Other Help</button>
       </div>
     </div>
 
-  </div>
+    <div class="chat-footer">
+      <input type="text" id="user-input" placeholder="Ask me anything..." />
+      <button id="send-btn"><span class="material-icons-outlined" style="font-size:20px;">send</span></button>
+    </div>
   </div>
 
-  <div class="back">
-
-  </div>
+  <div class="neon-blur neon-blur-1"></div>
+  <div class="neon-blur neon-blur-2"></div>
 
   <div class="container2">
-    <h2>Features</h2>
+    <div class="section-badge">AI-Powered Capabilities</div>
+    <h2>Next-Generation Features</h2>
 
-    <div class="box1">
-
-      <div class="analysis">
+    <div class="features-grid">
+      <div class="feature-card ai-glow">
+        <div class="feature-icon"><span class="material-icons-outlined">query_stats</span></div>
         <h3>AI Analysis</h3>
-        <p>Automatically categorizes and priootizes<br>grivance using NLP.</p>
-        <img src="photo1.jpeg">
+        <p>Automatically categorizes and prioritizes grievances using advanced NLP models.</p>
       </div>
 
-      <div class="bound">
+      <div class="feature-card ai-glow delay-1">
+        <div class="feature-icon"><span class="material-icons-outlined">hourglass_top</span></div>
         <h3>Time Bound Resolution</h3>
-        <p>Authorities complaints within 24 hours<br>and set deadlines.</p>
-        <img src="photo2.jpeg">
+        <p>Authorities process complaints within 24 hours with strictly enforced deadlines.</p>
       </div>
-    </div>
 
-    <div class="box2">
-      <div class="track">
+      <div class="feature-card ai-glow delay-2">
+        <div class="feature-icon"><span class="material-icons-outlined">track_changes</span></div>
         <h3>Transparent Tracking</h3>
-        <p>Tracks status deadlines, and resolution time<br> in real-time.</p>
-        <img src="photo3.jpeg">
+        <p>Track status, deadlines, and resolution time in real-time on our smart dashboard.</p>
       </div>
 
-      <div class="chatbot">
-        <h3>AI Chatbot</h3>
-        <p>Get instant guidance and complaint updates<br> via AI Chatbot.</p>
-        <img src="photo4.jpeg">
+      <div class="feature-card ai-glow delay-3">
+        <div class="feature-icon"><span class="material-icons-outlined">smart_toy</span></div>
+        <h3>AI Assistant</h3>
+        <p>Get instant guidance and contextual complaint updates via our 24/7 AI Chatbot.</p>
       </div>
     </div>
   </div>
@@ -126,17 +119,17 @@
   <section class="how-it-works" id="how">
 
     <div class="container3">
-
+      <div class="section-badge">Streamlined Flow</div>
       <h1>How it works</h1>
       <p class="subtitle">
-        Mobile banking differs from mobile payments, which involves the use of a mobile device
+        Our AI-powered engine seamlessly guides your complaint from submission to resolution.
       </p>
       <div class="steps">
 
         <!-- Step 1 -->
         <div class="step">
           <div class="icon">
-            <img src="photo5.jpeg">
+            <span class="material-icons-outlined">verified_user</span>
           </div>
           <h3>Verify via OTP</h3>
           <p>Verify for secure <br>access</p>
@@ -147,7 +140,7 @@
         <!-- Step 2 -->
         <div class="step">
           <div class="icon">
-            <img src="photo6.jpeg">
+            <span class="material-icons-outlined">assignment</span>
           </div>
           <h3>Submit <br>complaint</h3>
           <p>Easy-to-use form <br> detailed issues reporting</p>
@@ -158,7 +151,7 @@
         <!-- Step 3 -->
         <div class="step">
           <div class="icon">
-            <img src="photo7.jpeg">
+            <span class="material-icons-outlined">psychology</span>
           </div>
           <h3>AI + Authority <br>Review</h3>
           <p>Intelligent analysis & official<br> oversight reporting</p>
@@ -169,7 +162,7 @@
         <!-- Step 4 -->
         <div class="step">
           <div class="icon">
-            <img src="photo8.jpeg">
+            <span class="material-icons-outlined">my_location</span>
           </div>
           <h3>Track & <br>Resolve</h3>
           <p>Transparent updates <br> and deadlines</p>
@@ -182,21 +175,32 @@
 
 
   <div class="smart">
-    <h1>Built for a smarter Society</h1>
+    <div class="section-badge">Infrastructure</div>
+    <h1>Built for a Smarter Society</h1>
 
-    <p>Privacy-frist (no document required)</p>
-
-    <p>Ai-assisted,human-verified decisions</p>
-    <p>Transparent & accountable resolution </p>
-
+    <div class="smart-features">
+      <div class="smart-item">
+        <span class="material-icons-outlined"
+          style="font-size: 36px; color: #489c4c; margin-bottom: 12px; display: block;">security</span>
+        <p>Privacy-first architecture <br><small>(no document mapping required)</small></p>
+      </div>
+      <div class="smart-item">
+        <span class="material-icons-outlined"
+          style="font-size: 36px; color: #489c4c; margin-bottom: 12px; display: block;">model_training</span>
+        <p>AI-assisted processing with <br><small>human-verified oversight</small></p>
+      </div>
+      <div class="smart-item">
+        <span class="material-icons-outlined"
+          style="font-size: 36px; color: #489c4c; margin-bottom: 12px; display: block;">monitoring</span>
+        <p>Transparent analytics & <br><small>accountable resolution mapping</small></p>
+      </div>
+    </div>
   </div>
 
   <div class="ready" id="track-complaints">
     <h1>Ready to raise your Concern?</h1>
     <div class="btn">
-      <form action="verify.html">
-        <button class="btn1">Complaint Now</button>
-      </form>
+      <button id="bottom-action-btn" class="btn1" onclick="handleMainAction()">Complaint Now</button>
 
 
       <form action="track.html">
@@ -212,11 +216,10 @@
     <p>Hackthon/Unbeatable5</p>
     <p>Kle BK College of BCA, Chikodi</p>
     <a href="veri.html">Authority</a>
-    </form>
   </div>
   <hr>
   <div class="last">
-   
+
     <p class="p1"> &copy Unbeatable5.All rights reserved.</p>
     <div class="p2">
       <p>privacy Policy </p>
