@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const CitizenSchema = new mongoose.Schema({
   name:           { type: String, required: true, trim: true },
+  email:          { type: String, lowercase: true, trim: true }, // Added for OTP/Login
   aadhaarHash:    { type: String, required: true, unique: true }, // hashed for privacy
   aadhaarMasked:  { type: String, required: true },               // e.g. XXXX-XXXX-3456
   passwordHash:   { type: String, required: true },

@@ -61,25 +61,35 @@ async function checkStatus(paramId = null) {
         const linePercent = ((currentStep - 1) / 3) * 100;
         document.getElementById("active-line").style.height = `${linePercent}%`;
 
-        // Images
+        // Images (Citizen Evidence)
         const citImg = document.querySelector("#citizen-evidence img");
         if (c.images && c.images.length > 0) {
-            citImg.src = `http://localhost:5000/uploads/${c.images[0]}`;
+            // Using a more robust path (assuming backend is on :5000)
+            const imgPath = c.images[0];
+            citImg.src = `http://localhost:5000/uploads/${imgPath}`;
             citImg.style.display = "block";
+            
+            // Fallback for different environments (127.0.0.1)
+            citImg.onerror = () => {
+                if (!citImg.src.includes('127.0.0.1')) {
+                    citImg.src = `http://127.0.0.1:5000/uploads/${imgPath}`;
+                }
+            };
         } else {
-            citImg.style.display = "none";
+            document.getElementById("citizen-evidence").style.display = "none";
         }
 
         const proofBox = document.getElementById("f-proof");
-        if (c.status === 'resolved') {
+        if (c.status === 'resolved' && c.resolvedImages && c.resolvedImages.length > 0) {
             proofBox.style.display = "block";
             const resImg = proofBox.querySelector("img");
-            if (c.resolvedImages && c.resolvedImages.length > 0) {
-                resImg.src = `http://localhost:5000/uploads/${c.resolvedImages[0]}`;
-                resImg.style.display = "block";
-            } else {
-                resImg.style.display = "none";
-            }
+            resImg.src = `http://localhost:5000/uploads/${c.resolvedImages[0]}`;
+            resImg.style.display = "block";
+            resImg.onerror = () => {
+                if (!resImg.src.includes('127.0.0.1')) {
+                    resImg.src = `http://127.0.0.1:5000/uploads/${c.resolvedImages[0]}`;
+                }
+            };
         } else {
             proofBox.style.display = "none";
         }

@@ -42,12 +42,22 @@ exports.submitComplaint = async (req, res) => {
     const images = req.files ? req.files.map(f => f.filename) : [];
     console.log('Uploaded Images:', images);
 
-    console.log('Creating Complaint in MongoDB...');
+    // Map Category to Department
+    const deptMap = {
+      'water': 'WATER',
+      'road': 'ROAD',
+      'electrical': 'ELECTRICAL',
+      'sanitation': 'SANITATION'
+    };
+    const assignedDept = deptMap[aiResult.category] || 'GENERAL';
+
+    console.log(`Creating Complaint in MongoDB (Dept: ${assignedDept})...`);
     const complaint = await Complaint.create({
       citizen:             req.user._id,
       title, description, area, pincode, ward, images,
       category:            aiResult.category,
       priority:            aiResult.priority,
+      assignedDept:        assignedDept, // CRITICAL FIX: Set the department
       aiCategoryConfidence: aiResult.aiCategoryConfidence,
       aiPriorityConfidence: aiResult.aiPriorityConfidence
     });

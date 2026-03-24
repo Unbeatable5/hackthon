@@ -91,18 +91,18 @@ function renderTable(complaints, tbodyId) {
         const statusText = (c.status || 'pending').replace('_',' ').toUpperCase();
         const workerName = c.assignedTo ? c.assignedTo.name : '<span style="color:#d97706; font-size:11px;">🤖 AI Assigning...</span>';
 
+        const isViewed = c.viewedAt ? "true" : "false";
+        const cleanStatus = (c.status || 'pending').toLowerCase();
+
         return `
-            <tr data-submitted="${hoursAgo.toFixed(2)}" data-id="${c.complaintId}">
-                <td><input type="checkbox"></td>
+            <tr data-submitted="${hoursAgo.toFixed(2)}" data-id="${c.complaintId}" data-status="${cleanStatus}" data-viewed="${isViewed}">
                 <td><strong>${c.complaintId || 'N/A'}</strong></td>
                 <td>${cat}</td>
                 <td><span class="badge badge-${c.status || 'pending'}">${statusText}</span></td>
-                <td>${workerName}</td>
                 <td>${c.area || 'N/A'}</td>
-                <td>${dateStr}</td>
-                <td><span class="pri-${c.priority || 'medium'}">${pri}</span></td>
+                <td>${workerName}</td>
                 <td class="sla-cell"></td>
-                <td><button class="btn-view" onclick="viewComplaint('${c.complaintId}')">Inspect <span class="material-icons-outlined" style="font-size:16px;">chevron_right</span></button></td>
+                <td style="text-align:right;"><button class="btn-view" onclick="viewComplaint('${c.complaintId}')">Inspect <span class="material-icons-outlined" style="font-size:16px;">chevron_right</span></button></td>
             </tr>
         `;
     }).join("");

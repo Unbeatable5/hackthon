@@ -19,15 +19,23 @@ async function loadHistory() {
             container.innerHTML = `<p style="color:#94a3b8; font-size:0.85rem; text-align:center; padding:20px;">No complaints submitted yet.</p>`;
             return;
         }
-        container.innerHTML = complaints.map(c => `
-            <div class="card">
-                <p><b>${c.category.charAt(0).toUpperCase() + c.category.slice(1)} Issue</b> <button onclick="location.href='newtrack.html?id=${c.complaintId}'">View</button></p>
-                <p>Date: ${new Date(c.submittedAt).toLocaleDateString()}</p>
-                <p class="status">${c.status.replace('_',' ')}</p>
-            </div>
-        `).join("");
+        container.innerHTML = complaints.map(c => {
+            const category = c.category ? (c.category.charAt(0).toUpperCase() + c.category.slice(1)) : "Other";
+            const date = c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : "Unknown Date";
+            const status = (c.status || "pending").replace('_', ' ').toUpperCase();
+            
+            return `
+                <div class="card">
+                    <p><b>${category} Issue</b> <button onclick="location.href='newtrack.html?id=${c.complaintId}'">View</button></p>
+                    <p style="font-size:0.8rem; color:#64748b; margin:4px 0;">ID: ${c.complaintId}</p>
+                    <p style="font-size: 0.85rem;">Date: ${date}</p>
+                    <p class="status" style="font-size:0.85rem; margin-top:5px;">${status}</p>
+                </div>
+            `;
+        }).join("");
     } catch (e) {
         console.error("Failed to load history", e);
+        container.innerHTML = `<p style="color:#ef4444; font-size:0.85rem; text-align:center; padding:20px;">Error syncing history.</p>`;
     }
 }
 

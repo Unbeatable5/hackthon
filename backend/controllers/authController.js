@@ -20,18 +20,18 @@ const sendOTP = async (recipient, otp) => {
       subject: 'CivicSense — Your OTP',
       html: `<h2>Your OTP: <strong>${otp}</strong></h2><p>Valid for 10 minutes.</p>`
     });
-    console.log(otp);
     return true;
   } catch (err) {
-    console.log(otp);
+    console.error('[EMAIL ERROR]', err.message);
+    console.log(`[MOCK OTP] ${otp}`);
     return false; // Indicates mock mode was used
   }
 };
 
-// POST /api/auth/citizen/register (Aadhaar-based)
+// POST /api/auth/citizen/register (Aadhaar + Email)
 exports.citizenRegister = async (req, res) => {
   try {
-    const { aadhaar } = req.body;
+    const { aadhaar, email } = req.body;
     if (!aadhaar || !/^\d{12}$/.test(aadhaar)) {
       return res.status(400).json({ error: 'Valid 12-digit Aadhaar number required' });
     }
@@ -40,11 +40,17 @@ exports.citizenRegister = async (req, res) => {
     const aadhaarHash = await bcrypt.hash(aadhaar, 10);
     const aadhaarMasked = `XXXX-XXXX-${aadhaar.slice(-4)}`;
 
-    // Find existing citizen by checking hash
-    const allCitizens = await Citizen.find({});
-    let citizen = null;
-    for (const c of allCitizens) {
-      if (c.aadhaarHash && await bcrypt.compare(aadhaar, c.aadhaarHash)) { citizen = c; break; }
+    // Find existing citizen by email OR checking hashed Aadhaar
+    let citizen = await Citizen.findOne({ email: email?.toLowerCase() });
+    
+    if (!citizen) {
+      const allCitizens = await Citizen.find({});
+      for (const c of allCitizens) {
+        if (c.aadhaarHash && await bcrypt.compare(aadhaar, c.aadhaarHash)) {
+          citizen = c;
+          break;
+        }
+      }
     }
 
     // Check if banned
@@ -58,10 +64,12 @@ exports.citizenRegister = async (req, res) => {
     if (citizen) {
       citizen.otp = otp;
       citizen.otpExpiry = otpExpiry;
+      if (email) citizen.email = email; // Update email if provided
       await citizen.save();
     } else {
       citizen = await Citizen.create({
         name: `Citizen-${aadhaar.slice(-4)}`,
+        email: email || undefined,
         aadhaarHash,
         aadhaarMasked,
         passwordHash: 'otp_only',
@@ -70,12 +78,20 @@ exports.citizenRegister = async (req, res) => {
       });
     }
 
-    const sent = await sendOTP(aadhaarMasked, otp);
-    console.log(otp); // print OTP for dev/hackathon mode
+    // Send OTP to the real email address if provided, otherwise fallback to masked Aadhaar (mock mode)
+    const recipient = email || aadhaarMasked;
+    const sent = await sendOTP(recipient, otp);
+    
+    console.log(`[AUTH] OTP for ${recipient}: ${otp}`);
+    
+    // Sign token directly for hackathon/frictionless flow
+    const token = signToken(citizen._id, 'citizen');
+
     res.status(200).json({
       message: sent ? 'OTP sent!' : 'OTP generated (Mock Mode)',
       isMock: !sent,
-      aadhaarMasked
+      token,
+      citizen: { id: citizen._id, name: citizen.name, aadhaarMasked: citizen.aadhaarMasked }
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

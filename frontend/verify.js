@@ -93,128 +93,54 @@ sendEmailBtn.onclick = async () => {
     }
 };
 
-verifyEmailBtn.onclick = () => {
+verifyEmailBtn.onclick = async () => {
     const enteredOtp = emailOtpInput.value.trim();
 
     if (enteredOtp === generatedEmailOtp) {
         isEmailVerified = true;
         emailMsg.style.color = "#489c4c";
-        emailMsg.innerText = "Email Verified Successfully! ✅";
+        emailMsg.innerText = "Email Verified! Finalizing Secure Link... 🛡️";
 
-        // Disable email editing
-        emailInput.disabled = true;
-        emailOtpInput.disabled = true;
-        sendEmailBtn.style.display = "none";
-        verifyEmailBtn.style.display = "none";
+        // Logic for Direct Aadhaar Login after Email Verification
+        let aadhaar = aadhaarInput.value.trim().replace(/\s/g, '');
+        const email = emailInput.value.trim();
 
-        // Enable Aadhaar phase
-        generateBtn.disabled = false;
-        generateBtn.classList.remove("disabled");
-        generateBtn.title = "Proceed with Aadhaar verification";
+        if (!/^\d{12}$/.test(aadhaar)) {
+            emailMsg.style.color = "red";
+            emailMsg.innerText = "Please enter a valid 12-digit Aadhaar first.";
+            return;
+        }
+
+        try {
+            const response = await fetch("http://localhost:5000/api/auth/citizen/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ aadhaar, email })
+            });
+            const result = await response.json();
+
+            if (response.ok && result.token) {
+                localStorage.setItem('token', result.token);
+                localStorage.setItem('user', JSON.stringify(result.citizen));
+                localStorage.setItem('isVerified', 'true');
+                
+                emailMsg.innerText = "Identity Verified! Redirecting...";
+                setTimeout(() => {
+                    window.location.href = "submit.html";
+                }, 800);
+            } else {
+                emailMsg.style.color = "red";
+                emailMsg.innerText = result.error || "Failed to link Aadhaar identity.";
+            }
+        } catch (error) {
+            emailMsg.style.color = "red";
+            emailMsg.innerText = "Server connection error.";
+        }
     } else {
         emailMsg.style.color = "red";
         emailMsg.innerText = "Invalid OTP. Please try again.";
     }
 };
 
-// --- AADHAAR OTP LOGIC (Existing) ---
-
-generateBtn.onclick = async () => {
-    if (!isEmailVerified) return;
-
-    let aadhaar = aadhaarInput.value.trim().replace(/\s/g, '');
-
-    if (!/^\d{12}$/.test(aadhaar)) {
-        mainMsg.style.color = "red";
-        mainMsg.innerText = "Enter a valid 12-digit Aadhaar number";
-        return;
-    }
-
-    mainMsg.innerText = "";
-    loading.classList.remove("hidden");
-    otpWrapper.classList.add("hidden");
-    verifyBtn.classList.add("hidden");
-
-    try {
-        const response = await fetch("http://localhost:5000/api/auth/citizen/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ aadhaar })
-        });
-        const result = await response.json();
-
-        loading.classList.add("hidden");
-        if (response.ok) {
-            mainMsg.style.color = "#489c4c";
-            mainMsg.innerText = `Aadhaar OTP sent for suffix ${aadhaar.slice(-4)}`;
-
-            generateBtn.innerText = "Resend Aadhaar OTP";
-            generateBtn.style.background = "#dc2626";
-
-            otpWrapper.classList.remove("hidden");
-            verifyBtn.classList.remove("hidden");
-            otpInput.value = "";
-            boxes.forEach(b => b.innerText = "");
-            otpInput.focus();
-        } else {
-            mainMsg.style.color = "red";
-            mainMsg.innerText = result.error || "Failed to initiate Aadhaar verification";
-        }
-    } catch (error) {
-        loading.classList.add("hidden");
-        mainMsg.style.color = "red";
-        mainMsg.innerText = "Server unreachable";
-    }
-};
-
-// OTP Input Visuals
-otpInput.addEventListener("input", () => {
-    otpInput.value = otpInput.value.replace(/\D/g, "").slice(0, 6);
-    boxes.forEach((box, i) => {
-        box.innerText = otpInput.value[i] || "";
-    });
-});
-
-function focusOTP() {
-    otpInput.focus();
-}
-
-// FINAL VERIFICATION & SUBMIT
-verifyBtn.onclick = async () => {
-    const aadhaar = aadhaarInput.value.trim().replace(/\s/g, '');
-    const otp = otpInput.value;
-
-    if (otp.length !== 6) {
-        mainMsg.style.color = "red";
-        mainMsg.innerText = "Enter 6-digit Aadhaar OTP";
-        return;
-    }
-
-    try {
-        const response = await fetch("http://localhost:5000/api/auth/citizen/verify-otp", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ aadhaar, otp })
-        });
-        const result = await response.json();
-
-        if (response.ok) {
-            mainMsg.style.color = "#489c4c";
-            mainMsg.innerText = "Identity Verified Successfully! Finalizing complaint...";
-
-            localStorage.setItem('token', result.token);
-            localStorage.setItem('user', JSON.stringify(result.citizen));
-            localStorage.setItem('isVerified', 'true');
-
-            setTimeout(() => {
-                window.location.href = "submit.html";
-            }, 1000);
-        } else {
-            mainMsg.style.color = "red";
-            mainMsg.innerText = result.error || "Invalid Aadhaar OTP";
-        }
-    } catch (error) {
-        mainMsg.style.color = "red";
-        mainMsg.innerText = "Server connection error";
-    }
-};
+// --- AADHAAR OTP LOGIC REMOVED ---
+// Login now happens automatically after Email OTP verification.
