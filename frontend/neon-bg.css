@@ -1,0 +1,53 @@
+/* ── SHARED NEON BACKGROUND ANIMATION ── */
+
+body {
+  overflow-x: hidden;
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(rgba(203, 213, 225, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(203, 213, 225, 0.25) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.neon-blur {
+  position: fixed;
+  z-index: -9999;
+  border-radius: 50%;
+  filter: blur(130px);
+  pointer-events: none;
+  animation: floatNeon 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neon-blur-1 {
+  width: 55vw;
+  height: 55vw;
+  background-color: rgba(59, 130, 246, 0.3);
+  top: 5%;
+  left: -20%;
+  animation-delay: 0s;
+}
+
+.neon-blur-2 {
+  width: 50vw;
+  height: 50vw;
+  background-color: rgba(74, 222, 128, 0.2);
+  top: 40%;
+  right: -15%;
+  animation-delay: -5s;
+}
+
+.neon-blur-3 {
+  width: 45vw;
+  height: 45vw;
+  background-color: rgba(168, 85, 247, 0.18);
+  bottom: -5%;
+  left: 25%;
+  animation-delay: -10s;
+}
+
+@keyframes floatNeon {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(8vw, 10vh) scale(1.1); }
+  66%  { transform: translate(-10vw, 5vh) scale(0.95); }
+  100% { transform: translate(5vw, -10vh) scale(1.05); }
+}

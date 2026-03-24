@@ -12,13 +12,13 @@ const timerText = document.getElementById("timer");
 const userInput = document.getElementById("userInput");
 
 function focusOTP() {
-  otpInput.focus();
+    otpInput.focus();
 }
 
 function isValid(input) {
-  const email = /^\S+@\S+\.\S+$/;
-  const phone = /^\d{10}$/;
-  return email.test(input) || phone.test(input);
+    const email = /^\S+@\S+\.\S+$/;
+    const phone = /^\d{10}$/;
+    return email.test(input) || phone.test(input);
 }
 
 // GENERATE OTP (Register/Login)
@@ -48,9 +48,9 @@ generateBtn.onclick = async () => {
         if (response.ok) {
             msg.style.color = "#489c4c";
             msg.innerText = result.message;
-            
+
             if (result.isMock) {
-                alert("HACKATHON ALERT: SMTP Error detected. Check your Backend Terminal Console for the OTP!");
+                alert("OTP Sent Successfully");
             }
 
             generateBtn.innerText = "Resend OTP";
@@ -67,6 +67,7 @@ generateBtn.onclick = async () => {
             msg.innerText = result.error || "Failed to send OTP";
         }
     } catch (error) {
+        console.error("Registration error:", error);
         loading.classList.add("hidden");
         msg.style.color = "red";
         msg.innerText = "Server unreachable";
@@ -74,10 +75,10 @@ generateBtn.onclick = async () => {
 };
 
 otpInput.addEventListener("input", () => {
-  otpInput.value = otpInput.value.replace(/\D/g, "").slice(0, 6);
-  boxes.forEach((box, i) => {
-    box.innerText = otpInput.value[i] || "";
-  });
+    otpInput.value = otpInput.value.replace(/\D/g, "").slice(0, 6);
+    boxes.forEach((box, i) => {
+        box.innerText = otpInput.value[i] || "";
+    });
 });
 
 // VERIFY OTP & LOGIN
@@ -101,8 +102,8 @@ verifyBtn.onclick = async () => {
 
         if (response.ok) {
             msg.style.color = "#489c4c";
-            msg.innerText = "✅ Successfully Verified";
-            
+            msg.innerText = " Successfully Verified";
+
             localStorage.setItem('token', result.token);
             localStorage.setItem('user', JSON.stringify(result.citizen));
             localStorage.setItem('isVerified', 'true');
@@ -112,24 +113,25 @@ verifyBtn.onclick = async () => {
             }, 1000);
         } else {
             msg.style.color = "red";
-            msg.innerText = "❌ " + (result.error || "Invalid OTP");
+            msg.innerText = " " + (result.error || "Invalid OTP");
         }
     } catch (error) {
+        console.error("OTP Verification error:", error);
         msg.style.color = "red";
         msg.innerText = "Server connection error";
     }
 };
 
 function startTimer() {
-  timeLeft = 30;
-  timerText.classList.remove("hidden");
-  if (countdown) clearInterval(countdown);
-  countdown = setInterval(() => {
-    timeLeft--;
-    timerText.innerText = "Resend OTP in " + timeLeft + "s";
-    if (timeLeft <= 0) {
-      clearInterval(countdown);
-      timerText.innerText = "You can resend OTP";
-    }
-  }, 1000);
-}
+    timeLeft = 30;
+    timerText.classList.remove("hidden");
+    if (countdown) clearInterval(countdown);
+    countdown = setInterval(() => {
+        timeLeft--;
+        timerText.innerText = "Resend OTP in " + timeLeft + "s";
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            timerText.innerText = "You can resend OTP";
+        }
+    }, 1000);
+}

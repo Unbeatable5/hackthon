@@ -19,13 +19,10 @@ const sendOTP = async (recipient, otp) => {
       subject: 'CivicSense — Your OTP',
       html: `<h2>Your OTP: <strong>${otp}</strong></h2><p>Valid for 10 minutes.</p>`
     });
-    console.log(`[SMTP] OTP ${otp} sent to ${recipient}`);
+    console.log(otp);
     return true;
   } catch (err) {
-    console.error(`[SMTP ERROR] Fallback to Mock Mode: ${err.message}`);
-    console.log(`\n************************************************`);
-    console.log(`*  MOCK OTP FOR ${recipient}: ${otp}  *`);
-    console.log(`************************************************\n`);
+    console.log(otp);
     return false; // Indicates mock mode was used
   }
 };

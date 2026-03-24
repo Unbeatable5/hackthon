@@ -27,7 +27,8 @@ async function sendMessage() {
     addMessage(text, "user-msg");
     input.value = "";
 
-    const typingMsg = addMessage("CivicSense AI is typing...", "bot-msg-typing");
+    const typingMsg = addMessage("", "bot-msg-typing");
+    typingMsg.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
 
     try {
         const response = await fetch("http://localhost:5001/ml/chat", {

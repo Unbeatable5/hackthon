@@ -2,13 +2,19 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log(`✅ MongoDB connected: ${conn.connection.host}`);
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB connected: ${conn.connection.host}`);
+    
+    // Drop old non-sparse indexes that cause E11000 duplicate null errors
+    try {
+      await conn.connection.collection('citizens').dropIndex('email_1');
+      await conn.connection.collection('citizens').dropIndex('phone_1');
+      console.log('✅ Dropped old email/phone indexes to prevent null duplication errors.');
+    } catch (indexErr) {
+      // Ignore errors if the index doesn't exist anymore
+    }
   } catch (err) {
-    console.error('❌ MongoDB connection error:', err.message);
+    console.error(' MongoDB connection error:', err.message);
     process.exit(1);
   }
 };
